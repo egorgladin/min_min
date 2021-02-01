@@ -7,7 +7,11 @@ def get_H_inv(A, b, x):
     for i in range(A.shape[0]):
         a = A[i:i+1].T
         H += a @ a.T / (a.T @ x - b[i])**2
-    return np.linalg.inv(H)
+    try:
+        H_inv = np.linalg.inv(H)
+    except:
+        H_inv = np.linalg.pinv(H)
+    return H_inv
 
 
 def get_sigmas(A, b, x, H_inv):
@@ -24,7 +28,11 @@ def get_Q_inv(sigmas, A, b, x):
     for i in range(A.shape[0]):
         a = A[i:i+1].T
         Q += sigmas[i] * a @ a.T / (a.T @ x - b[i])**2
-    return np.linalg.inv(Q)
+    try:
+        Q_inv = np.linalg.inv(Q)
+    except:
+        Q_inv = np.linalg.pinv(Q)
+    return Q_inv
 
 
 def get_dV(sigmas, A, b, x):
